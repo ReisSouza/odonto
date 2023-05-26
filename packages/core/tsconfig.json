@@ -1,0 +1,4 @@
+{
+  "extends": "@odonto-ui/ts-config/react.json",
+  "include": ["src"]
+}
