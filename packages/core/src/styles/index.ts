@@ -1,13 +1,18 @@
-import {
-  colors,
-  fonts,
-  fontSizes,
-  fontWeights,
-  lineHeights,
-  radii,
-  space,
-} from '@odonto-ui/tokens'
 import { createStitches, defaultThemeMap } from '@stitches/react'
+
+import { MainTheme } from './themes/main/main'
+import { media } from '@odonto-ui/tokens'
+
+export type {
+  CSS,
+  VariantProps,
+  ComponentProps,
+  ScaleValue,
+  CSSProperties,
+  CreateStitches,
+  DefaultThemeMap,
+  PropertyValue,
+} from '@stitches/react'
 
 export const {
   styled,
@@ -16,22 +21,20 @@ export const {
   keyframes,
   getCssText,
   theme,
-  createTheme,
   config,
+  createTheme,
 } = createStitches({
   themeMap: {
     ...defaultThemeMap,
     height: 'space',
     width: 'space',
   },
-
-  theme: {
-    colors,
-    fontSizes,
-    fontWeights,
-    fonts,
-    lineHeights,
-    radii,
-    space,
+  media: {
+    dark: '(prefers-color-scheme: dark)',
+    custom: '(prefers-color-scheme: custom)',
+    ...media,
   },
+  theme: MainTheme,
 })
+
+export type Theme = keyof typeof MainTheme

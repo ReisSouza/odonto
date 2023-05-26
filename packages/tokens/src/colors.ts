@@ -1,20 +1,81 @@
 export const colors = {
-  white: '#FFF',
-  black: '#000',
+  'primary-light-normal': '#E7F4FC',
+  'primary-light-hover': '#DAEEFA',
+  'primary-light-active': '#B3DCF4',
 
-  gray100: '#E1E1E6',
-  gray200: '#A9A9B2',
-  gray400: '#7C7C8A',
-  gray500: '#505059',
-  gray600: '#323238',
-  gray700: '#29292E',
-  gray800: '#202024',
-  gray900: '#121214',
+  'primary-normal': '#0A8FDC',
+  'primary-hover': '#0981C6',
+  'primary-active': '#0872B0',
 
-  ignite300: '#00B37E',
-  ignite500: '#00875F',
-  ignite700: '#015F43',
-  ignite900: '#00291D',
+  'primary-dark-normal': '#086BA5',
+  'primary-dark-hover': '#065684',
+  'primary-dark-active': '#054063',
 
-  test: '#fff',
+  'primary-darkest': '#04324D',
+
+  'secondary-light-normal': '#E9EBF8',
+  'secondary-light-hover': '#E3E9ED',
+  'secondary-light-active': '#C6D2DA',
+
+  'secondary-normal': '#466F87',
+  'secondary-hover': '#3F647A',
+  'secondary-active': '#38596C',
+
+  'secondary-dark': '#355365',
+  'secondary-dark-hover': '#2A4351',
+  'secondary-dark-active': '#1F323D',
+
+  'secondary-darkest': '#19272F',
+
+  'tertiary-light-normal': '#F0EEF2',
+  'tertiary-light-hover': '#E8E6EB',
+  'tertiary-light-active': '#D0CBD6',
+
+  'tertiary-normal': '#68587A',
+  'tertiary-hover': '#5E4F6E',
+  'tertiary-active': '#534662',
+
+  'tertiary-dark': '#4E425C',
+  'tertiary-dark-hover': '#3E3549',
+  'tertiary-dark-active': '#2F2837',
+
+  'tertiary-darkest': '#241F2B',
+
+  'dark-light-normal': '#EEEEEE',
+  'dark-light-hover': '#E5E5E6',
+  'dark-light-active': '#C9C9CC',
+
+  'dark-normal': '#505059',
+  'dark-hover': '#484850',
+  'dark-active': '#404047',
+
+  'dark-dark-normal': '#3C3C43',
+  'dark-dark-hover': '#303035',
+  'dark-dark-active': '#242428',
+
+  'dark-darkest': '#1C1C1F',
+
+  'feedback-success-light': '#EAFAEE',
+  'feedback-success-normal': '#2ECC56',
+  'feedback-success-hover': '#29B84D',
+  'feedback-success-active': '#25A345',
+  'feedback-success-darkest': '#10471E',
+
+  'feedback-help-normal': '#FFD919',
+  'feedback-help-hover': '#FFE666',
+  'feedback-help-active': '#B39400',
+
+  'feedback-error-light': '#FAEBEA',
+  'feedback-error-normal': '#CC392E',
+  'feedback-error-hover': '#B83329',
+  'feedback-error-active': '#A32E25',
+  'feedback-error-darkest': '#471410',
+
+  white: '#ffffff',
+  black: '#111827',
+
+  border: '#E6E6E6',
+  background: '#F4F7FE',
+
+  text: '#242428',
 }

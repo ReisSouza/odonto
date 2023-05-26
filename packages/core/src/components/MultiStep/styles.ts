@@ -1,10 +1,10 @@
 import { styled } from '../../styles'
-import { Text } from '../Text'
+import Paragraph from '../Typography/Paragraph/Paragraph'
 
 export const MultiStepContainer = styled('div', {})
 
-export const Label = styled(Text, {
-  color: '$gray200',
+export const Label = styled(Paragraph, {
+  color: '$secondary-normal',
 
   defaultVariants: {
     size: 'xs',
@@ -20,13 +20,13 @@ export const Steps = styled('div', {
 
 export const Step = styled('div', {
   height: '$1',
-  borderRadius: '$px',
-  backgroundColor: '$gray600',
+  borderRadius: '$1',
+  backgroundColor: '$primary-normal',
 
   variants: {
     active: {
       true: {
-        backgroundColor: '$gray100',
+        backgroundColor: '$primary-active',
       },
     },
   },
