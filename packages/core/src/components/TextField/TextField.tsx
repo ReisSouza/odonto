@@ -6,6 +6,7 @@ import React, {
   useId,
   ReactNode,
   useState,
+  ElementType,
 } from 'react'
 
 import { formatString, FormatStringType } from '@format-string/core'
@@ -36,6 +37,7 @@ export type TextFieldProps = Omit<
     size?: 'small' | 'medium' | 'large'
     status?: 'default' | 'error' | 'warning' | 'success' | 'info'
     css?: CSS
+    as?: ElementType
   }
 
 export const TextField = forwardRef<ElementRef<typeof S.Input>, TextFieldProps>(
@@ -57,6 +59,7 @@ export const TextField = forwardRef<ElementRef<typeof S.Input>, TextFieldProps>(
       onInputChange,
       defaultValue,
       onChange,
+      as,
       ...props
     }: TextFieldProps,
     ref,

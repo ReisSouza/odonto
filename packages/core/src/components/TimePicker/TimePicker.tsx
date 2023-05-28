@@ -1,26 +1,21 @@
-/* eslint-disable no-case-declarations */
-import React, { KeyboardEvent, useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import * as S from './styles'
-import { TextField } from '../TextField/TextField'
-import dayjs from 'dayjs'
+import { TextField, TextFieldProps } from '../TextField/TextField'
 import { Clock } from 'phosphor-react'
+import { useTimePicker } from './useTimePicker'
+import { useAccessibility } from './useAccessibility'
+import { TimePickerProvider } from './TimePickerContext'
+import dayjs from 'dayjs'
 
-export type TimePickerProps = {
-  onTimeChange: (time: string) => void
-}
+export type TimePickerProps = TextFieldProps & {}
 
-const TimePicker: React.FC<TimePickerProps> = ({
-  onTimeChange = (value) => console.log(value),
+export const TimePickerNew: React.FC<TimePickerProps> = ({
+  onChange,
+  defaultValue = dayjs().add(10, 'hour').format('HH:mm'),
   ...rest
 }: TimePickerProps) => {
-  const [isInputFocused, setIsInputFocused] = useState(false)
-  const [time, setTime] = useState(dayjs())
-  const [inputValue, setInputValue] = useState(time.format('HH:mm'))
-  const [isOpen, setIsOpen] = useState(false)
-  const [activeSelection, setActiveSelection] = useState<'hour' | 'minute'>(
-    'hour',
-  )
   const containerRef = useRef<HTMLDivElement>(null)
+
   const hourButtonsRef = useRef<Array<HTMLButtonElement | null>>(
     Array.from(Array(24)).map(() => null),
   )
@@ -28,148 +23,69 @@ const TimePicker: React.FC<TimePickerProps> = ({
     Array.from(Array(60)).map(() => null),
   )
 
-  const hours = Array.from(Array(24).keys())
-  const minutes = Array.from(Array(60).keys())
+  const { handleOutsideClick, handleKeyDownInput } =
+    useAccessibility(containerRef)
+  const {
+    handleOpenTimePicker,
+    open,
+    hours,
+    inputValue,
+    setInputValue,
+    setOpen,
+    minutes,
+  } = useTimePicker()
+  const initialHourIndex = Number(inputValue?.split(':')[0]) % 24
+  const initialMinuteIndex = Number(inputValue?.split(':')[1]) % 60
 
-  const handleHourClick = (hour: number) => {
-    const newTime = dayjs(time).hour(hour)
-    setTime(newTime)
-    setInputValue(newTime.format('HH:mm'))
-    onTimeChange(newTime.format('HH:mm'))
-  }
+  const [isInitialRender, setIsInitialRender] = useState(true)
 
-  const handleMinuteClick = (minute: number) => {
-    const newTime = dayjs(time).minute(minute)
-    setTime(newTime)
-    setInputValue(newTime.format('HH:mm'))
-    onTimeChange(newTime.format('HH:mm'))
-    setIsOpen(false)
-  }
+  const [activeSelection, setActiveSelection] = useState<'hour' | 'minute'>(
+    isInitialRender ? 'hour' : 'minute',
+  )
 
-  const handleDateTimeInputChange = (value: string | undefined) => {
+  const [selectedHourIndex, setSelectedHourIndex] =
+    useState<number>(initialHourIndex)
+  const [selectedMinuteIndex, setSelectedMinuteIndex] =
+    useState<number>(initialMinuteIndex)
+
+  const handleChange = (value: string | undefined) => {
+    onChange && onChange(value)
     setInputValue(value || '')
-  }
 
-  const handleInputClick = () => {
-    setIsOpen(true)
-    setActiveSelection('hour')
-  }
+    const [hour, minute] = (value || '').split(':')
+    const hourIndex = Number(hour) % 24
+    const minuteIndex = Number(minute) % 60
 
-  const handleOutsideClick = (event: MouseEvent) => {
-    if (
-      containerRef.current &&
-      !containerRef.current.contains(event.target as Node)
-    ) {
-      setIsOpen(false)
+    setSelectedHourIndex(hourIndex)
+    setSelectedMinuteIndex(minuteIndex)
+
+    if (activeSelection === 'hour') {
+      hourButtonsRef.current[hourIndex]?.focus()
+    } else {
+      minuteButtonsRef.current[minuteIndex]?.focus()
     }
   }
 
-  const handleKeyDown = (event: KeyboardEvent<HTMLButtonElement>) => {
-    if (isOpen) {
-      switch (event.key) {
-        case 'ArrowUp':
-          event.preventDefault()
-          handlePrevious(event.currentTarget)
-          break
-        case 'ArrowDown':
-          event.preventDefault()
-          handleNext(event.currentTarget)
-          break
-        case 'ArrowLeft':
-          event.preventDefault()
-          setActiveSelection(activeSelection === 'hour' ? 'minute' : 'hour')
-          break
-        case 'ArrowRight':
-          event.preventDefault()
-          if (isInputFocused) {
-            setIsOpen(true)
-          }
-          setActiveSelection(activeSelection === 'hour' ? 'minute' : 'hour')
-          break
-        case 'Enter':
-          event.preventDefault()
-          const value = parseInt(
-            event.currentTarget.getAttribute('data-value') || '0',
-          )
-          updateInputValue(value)
-          if (activeSelection === 'hour') {
-            setActiveSelection('minute')
-          } else {
-            setIsOpen(false)
-          }
-          break
-        default:
-          break
-      }
-    }
+  const handleSelectHour = (hour: string, index: number) => {
+    const selectedTime = `${hour}:${inputValue?.split(':')[1]}`
+    setInputValue(selectedTime)
+    onChange && onChange(selectedTime)
+    setSelectedHourIndex(index)
+    setActiveSelection('minute')
+    setSelectedHourIndex(index)
   }
 
-  const handleKeyDownInput = (event: KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') {
-      setIsOpen(true)
-    }
+  const handleSelectMinute = (minute: string, index: number) => {
+    const selectedTime = `${inputValue?.split(':')[0]}:${minute}`
+    setInputValue(selectedTime)
+    onChange && onChange(selectedTime)
+    setSelectedMinuteIndex(index)
+    setOpen(false)
   }
 
-  const handleInputFocus = () => {
-    setIsInputFocused(true)
-  }
-  const handleInputBlur = () => {
-    setIsInputFocused(false)
-  }
-
-  const handlePrevious = (currentButton: HTMLButtonElement) => {
-    const index = parseInt(currentButton.getAttribute('data-index') || '0')
-    const buttonsRef =
-      activeSelection === 'hour' ? hourButtonsRef : minuteButtonsRef
-
-    if (buttonsRef.current) {
-      const previousIndex =
-        index === 0 ? buttonsRef.current.length - 1 : index - 1
-      buttonsRef.current[previousIndex]?.focus()
-      const value = parseInt(
-        buttonsRef.current[previousIndex]?.getAttribute('data-value') || '0',
-      )
-      updateInputValue(value)
-    }
-  }
-
-  const handleNext = (currentButton: HTMLButtonElement) => {
-    const index = parseInt(currentButton.getAttribute('data-index') || '0')
-    const buttonsRef =
-      activeSelection === 'hour' ? hourButtonsRef : minuteButtonsRef
-
-    if (buttonsRef.current) {
-      const nextIndex = index === buttonsRef.current.length - 1 ? 0 : index + 1
-      buttonsRef.current[nextIndex]?.focus()
-      const value = parseInt(
-        buttonsRef.current[nextIndex]?.getAttribute('data-value') || '0',
-      )
-      updateInputValue(value)
-    }
-  }
-
-  const updateInputValue = (value: number) => {
-    const newTime =
-      activeSelection === 'hour'
-        ? dayjs(time).hour(value)
-        : dayjs(time).minute(value)
-    setTime(newTime)
-    setInputValue(newTime.format('HH:mm'))
-    onTimeChange(newTime.format('HH:mm'))
-  }
-
-  const focusButtonByValue = (
-    value: number,
-    buttonsRef: React.RefObject<Array<HTMLButtonElement | null>>,
-  ) => {
-    if (buttonsRef.current) {
-      const index = buttonsRef.current.findIndex(
-        (button) =>
-          parseInt(button?.getAttribute('data-value') || '0') === value,
-      )
-      buttonsRef.current[index]?.focus()
-    }
-  }
+  useEffect(() => {
+    setIsInitialRender(false)
+  }, [])
 
   useEffect(() => {
     document.addEventListener('click', handleOutsideClick)
@@ -179,90 +95,163 @@ const TimePicker: React.FC<TimePickerProps> = ({
   }, [])
 
   useEffect(() => {
-    if (isOpen) {
-      if (activeSelection === 'hour') {
-        focusButtonByValue(time.hour(), hourButtonsRef)
-      } else {
-        focusButtonByValue(time.minute(), minuteButtonsRef)
-      }
+    if (open) {
+      setActiveSelection('hour')
+      setSelectedHourIndex(initialHourIndex)
+      hourButtonsRef.current[initialHourIndex]?.focus()
     }
-  }, [isOpen, activeSelection])
+  }, [open])
 
-  useEffect(() => {
-    const newTime = dayjs(inputValue, 'HH:mm')
-    if (newTime.isValid() && newTime.format('HH:mm') !== time.format('HH:mm')) {
-      setTime(newTime)
-      onTimeChange(newTime.format('HH:mm'))
-    }
-  }, [inputValue])
+  const handleKeyButton = (e: React.KeyboardEvent<HTMLButtonElement>) => {
+    if (!open) return
 
-  useEffect(() => {
-    if (isOpen && activeSelection === 'hour') {
-      focusButtonByValue(time.hour(), hourButtonsRef)
-    }
-  }, [isOpen, activeSelection, time])
+    const isHourSelection = activeSelection === 'hour'
+    const lastIndex = isHourSelection ? hours.length - 1 : minutes.length - 1
 
-  useEffect(() => {
-    if (isOpen && activeSelection === 'minute') {
-      focusButtonByValue(time.minute(), minuteButtonsRef)
+    switch (e.key) {
+      case 'ArrowUp':
+        e.preventDefault()
+        if (isHourSelection) {
+          const prevHourIndex =
+            selectedHourIndex === 0 ? lastIndex : selectedHourIndex - 1
+          setSelectedHourIndex(prevHourIndex)
+          hourButtonsRef.current[prevHourIndex]?.focus()
+          const newTime = `${hours[prevHourIndex]
+            .toString()
+            .padStart(2, '0')}:${inputValue?.split(':')[1]}`
+          setInputValue(newTime)
+          onChange && onChange(newTime)
+        } else {
+          const prevMinuteIndex =
+            selectedMinuteIndex === 0 ? lastIndex : selectedMinuteIndex - 1
+          setSelectedMinuteIndex(prevMinuteIndex)
+          minuteButtonsRef.current[prevMinuteIndex]?.focus()
+          const newTime = `${inputValue?.split(':')[0]}:${minutes[
+            prevMinuteIndex
+          ]
+            .toString()
+            .padStart(2, '0')}`
+          setInputValue(newTime)
+          onChange && onChange(newTime)
+        }
+        break
+      case 'ArrowDown':
+        e.preventDefault()
+        if (isHourSelection) {
+          const nextHourIndex =
+            selectedHourIndex === lastIndex ? 0 : selectedHourIndex + 1
+          setSelectedHourIndex(nextHourIndex)
+          hourButtonsRef.current[nextHourIndex]?.focus()
+          const newTime = `${hours[nextHourIndex]
+            .toString()
+            .padStart(2, '0')}:${inputValue?.split(':')[1]}`
+          setInputValue(newTime)
+          onChange && onChange(newTime)
+        } else {
+          const nextMinuteIndex =
+            selectedMinuteIndex === lastIndex ? 0 : selectedMinuteIndex + 1
+          setSelectedMinuteIndex(nextMinuteIndex)
+          minuteButtonsRef.current[nextMinuteIndex]?.focus()
+          const newTime = `${inputValue?.split(':')[0]}:${minutes[
+            nextMinuteIndex
+          ]
+            .toString()
+            .padStart(2, '0')}`
+          setInputValue(newTime)
+          onChange && onChange(newTime)
+        }
+        break
+      case 'Tab':
+      case 'ArrowRight':
+      case 'ArrowLeft':
+        e.preventDefault()
+        if (e.key === 'ArrowRight') {
+          setActiveSelection('minute')
+          minuteButtonsRef.current[selectedMinuteIndex]?.focus()
+        }
+        if (e.key === 'ArrowLeft') {
+          setActiveSelection('hour')
+          hourButtonsRef.current[selectedHourIndex]?.focus()
+        }
+        if (e.key === 'Tab' && activeSelection === 'minute') {
+          setActiveSelection('hour')
+          hourButtonsRef.current[selectedHourIndex]?.focus()
+        }
+        if (e.key === 'Tab' && activeSelection === 'hour') {
+          setActiveSelection('minute')
+          minuteButtonsRef.current[selectedMinuteIndex]?.focus()
+        }
+        break
+      case 'Enter':
+        e.preventDefault()
+        if (isHourSelection) {
+          setActiveSelection('minute')
+          minuteButtonsRef.current[selectedMinuteIndex]?.focus()
+        } else {
+          setOpen(false)
+        }
+        break
+      case 'Escape':
+        setOpen(false)
+        break
+      default:
+        break
     }
-  }, [isOpen, activeSelection, time])
+  }
 
   return (
-    <S.TimePickerContainer ref={containerRef}>
-      <TextField
-        type="time"
-        value={inputValue}
-        onChange={handleDateTimeInputChange}
-        onFocus={handleInputFocus}
-        onBlur={handleInputBlur}
-        onKeyDown={handleKeyDownInput}
-        iconRight={<Clock size={24} onClick={handleInputClick} />}
-      />
-      {isOpen && (
-        <S.DropdownContainer>
-          <S.WrappedHour>
-            {hours.map((hour, index) => (
-              <S.Button
-                key={hour}
-                ref={(el) => (hourButtonsRef.current[index] = el)}
-                className={`hour-button ${
-                  activeSelection === 'hour' && hour === time.hour()
-                    ? 'active'
-                    : ''
-                }`}
-                data-value={hour}
-                data-index={index}
-                onClick={() => handleHourClick(hour)}
-                onKeyDown={handleKeyDown}
-              >
-                {hour.toString().padStart(2, '0')}
-              </S.Button>
-            ))}
-          </S.WrappedHour>
-          <S.WrappedMinutes>
-            {minutes.map((minute, index) => (
-              <S.Button
-                key={minute}
-                ref={(el) => (minuteButtonsRef.current[index] = el)}
-                className={`minute-button ${
-                  activeSelection === 'minute' && minute === time.minute()
-                    ? 'active'
-                    : ''
-                }`}
-                data-value={minute}
-                data-index={index}
-                onClick={() => handleMinuteClick(minute)}
-                onKeyDown={handleKeyDown}
-              >
-                {minute.toString().padStart(2, '0')}
-              </S.Button>
-            ))}
-          </S.WrappedMinutes>
+    <TimePickerProvider defaultValue={defaultValue}>
+      <S.TimePickerContainer ref={containerRef}>
+        <TextField
+          {...rest}
+          value={inputValue}
+          defaultValue={defaultValue}
+          type="time"
+          iconRight={<Clock size={24} onClick={handleOpenTimePicker} />}
+          onChange={handleChange}
+          onKeyDown={handleKeyDownInput}
+        />
+
+        <S.DropdownContainer open={open}>
+          <S.WrappedButtons>
+            {hours.map((hour, index) => {
+              const hourString = hour.toString().padStart(2, '0')
+              const isActive = inputValue?.split(':')[0] === hourString
+
+              return (
+                <S.ButtonHour
+                  active={isActive}
+                  key={index}
+                  className="button-hour"
+                  ref={(el) => (hourButtonsRef.current[index] = el)}
+                  onClick={() => handleSelectHour(hourString, index)}
+                  onKeyDown={(e) => handleKeyButton(e)}
+                >
+                  {hourString}
+                </S.ButtonHour>
+              )
+            })}
+          </S.WrappedButtons>
+          <S.WrappedButtons>
+            {minutes.map((minute, index) => {
+              const minuteString = minute.toString().padStart(2, '0')
+              const isActive = inputValue?.split(':')[1] === minuteString
+              return (
+                <S.ButtonMinute
+                  active={isActive}
+                  key={index}
+                  onClick={() => handleSelectMinute(minuteString, index)}
+                  ref={(el) => (minuteButtonsRef.current[index] = el)}
+                  className="button-minute"
+                  onKeyDown={(e) => handleKeyButton(e)}
+                >
+                  {minuteString}
+                </S.ButtonMinute>
+              )
+            })}
+          </S.WrappedButtons>
         </S.DropdownContainer>
-      )}
-    </S.TimePickerContainer>
+      </S.TimePickerContainer>
+    </TimePickerProvider>
   )
 }
-
-export default TimePicker
