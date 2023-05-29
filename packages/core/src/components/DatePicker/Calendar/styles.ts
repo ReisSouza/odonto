@@ -17,6 +17,7 @@ export const CalendarContainer = styled('section', {
   marginTop: '$2',
   overflow: 'hidden',
   maxWidth: '300px',
+  top: '100%',
 
   borderRadius: '$2',
   position: 'absolute',
@@ -50,6 +51,7 @@ export const Container = styled('div', {
   display: 'flex',
   flexDirection: 'column',
   gap: '$1',
+  position: 'relative',
 })
 
 export const CalendarBody = styled('table', {

@@ -2,9 +2,6 @@ import React, { useEffect, useRef, useState } from 'react'
 import * as S from './styles'
 import { TextField, TextFieldProps } from '../TextField/TextField'
 import { Clock } from 'phosphor-react'
-import { useTimePicker } from './useTimePicker'
-import { useAccessibility } from './useAccessibility'
-import { TimePickerProvider } from './TimePickerContext'
 import dayjs from 'dayjs'
 
 export type TimePickerProps = TextFieldProps & {}
@@ -14,7 +11,15 @@ export const TimePickerNew: React.FC<TimePickerProps> = ({
   defaultValue = dayjs().add(10, 'hour').format('HH:mm'),
   ...rest
 }: TimePickerProps) => {
+  const [open, setOpen] = useState<boolean>(false)
+
+  const [inputValue, setInputValue] = useState<string | undefined>(
+    defaultValue || dayjs().format('HH:mm'),
+  )
   const containerRef = useRef<HTMLDivElement>(null)
+
+  const hours = Array.from(Array(24).keys())
+  const minutes = Array.from(Array(60).keys())
 
   const hourButtonsRef = useRef<Array<HTMLButtonElement | null>>(
     Array.from(Array(24)).map(() => null),
@@ -23,19 +28,17 @@ export const TimePickerNew: React.FC<TimePickerProps> = ({
     Array.from(Array(60)).map(() => null),
   )
 
-  const { handleOutsideClick, handleKeyDownInput } =
-    useAccessibility(containerRef)
-  const {
-    handleOpenTimePicker,
-    open,
-    hours,
-    inputValue,
-    setInputValue,
-    setOpen,
-    minutes,
-  } = useTimePicker()
+  const handleOpenTimePicker = () => {
+    setOpen(true)
+  }
+
   const initialHourIndex = Number(inputValue?.split(':')[0]) % 24
   const initialMinuteIndex = Number(inputValue?.split(':')[1]) % 60
+
+  const [selectedHourIndex, setSelectedHourIndex] =
+    useState<number>(initialHourIndex)
+  const [selectedMinuteIndex, setSelectedMinuteIndex] =
+    useState<number>(initialMinuteIndex)
 
   const [isInitialRender, setIsInitialRender] = useState(true)
 
@@ -43,10 +46,21 @@ export const TimePickerNew: React.FC<TimePickerProps> = ({
     isInitialRender ? 'hour' : 'minute',
   )
 
-  const [selectedHourIndex, setSelectedHourIndex] =
-    useState<number>(initialHourIndex)
-  const [selectedMinuteIndex, setSelectedMinuteIndex] =
-    useState<number>(initialMinuteIndex)
+  const handleOutsideClick = (event: MouseEvent) => {
+    if (
+      containerRef.current &&
+      !containerRef.current.contains(event.target as Node)
+    ) {
+      setOpen(false)
+    }
+  }
+
+  const handleKeyDownInput = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      setOpen(true)
+      event.preventDefault()
+    }
+  }
 
   const handleChange = (value: string | undefined) => {
     onChange && onChange(value)
@@ -200,58 +214,56 @@ export const TimePickerNew: React.FC<TimePickerProps> = ({
   }
 
   return (
-    <TimePickerProvider defaultValue={defaultValue}>
-      <S.TimePickerContainer ref={containerRef}>
-        <TextField
-          {...rest}
-          value={inputValue}
-          defaultValue={defaultValue}
-          type="time"
-          iconRight={<Clock size={24} onClick={handleOpenTimePicker} />}
-          onChange={handleChange}
-          onKeyDown={handleKeyDownInput}
-        />
+    <S.TimePickerContainer ref={containerRef}>
+      <TextField
+        {...rest}
+        value={rest.value || inputValue}
+        defaultValue={defaultValue}
+        type="time"
+        iconRight={<Clock size={24} onClick={handleOpenTimePicker} />}
+        onChange={handleChange}
+        onKeyDown={handleKeyDownInput}
+      />
 
-        <S.DropdownContainer open={open}>
-          <S.WrappedButtons>
-            {hours.map((hour, index) => {
-              const hourString = hour.toString().padStart(2, '0')
-              const isActive = inputValue?.split(':')[0] === hourString
+      <S.DropdownContainer open={open}>
+        <S.WrappedButtons>
+          {hours.map((hour, index) => {
+            const hourString = hour.toString().padStart(2, '0')
+            const isActive = inputValue?.split(':')[0] === hourString
 
-              return (
-                <S.ButtonHour
-                  active={isActive}
-                  key={index}
-                  className="button-hour"
-                  ref={(el) => (hourButtonsRef.current[index] = el)}
-                  onClick={() => handleSelectHour(hourString, index)}
-                  onKeyDown={(e) => handleKeyButton(e)}
-                >
-                  {hourString}
-                </S.ButtonHour>
-              )
-            })}
-          </S.WrappedButtons>
-          <S.WrappedButtons>
-            {minutes.map((minute, index) => {
-              const minuteString = minute.toString().padStart(2, '0')
-              const isActive = inputValue?.split(':')[1] === minuteString
-              return (
-                <S.ButtonMinute
-                  active={isActive}
-                  key={index}
-                  onClick={() => handleSelectMinute(minuteString, index)}
-                  ref={(el) => (minuteButtonsRef.current[index] = el)}
-                  className="button-minute"
-                  onKeyDown={(e) => handleKeyButton(e)}
-                >
-                  {minuteString}
-                </S.ButtonMinute>
-              )
-            })}
-          </S.WrappedButtons>
-        </S.DropdownContainer>
-      </S.TimePickerContainer>
-    </TimePickerProvider>
+            return (
+              <S.ButtonHour
+                active={isActive}
+                key={index}
+                className="button-hour"
+                ref={(el) => (hourButtonsRef.current[index] = el)}
+                onClick={() => handleSelectHour(hourString, index)}
+                onKeyDown={(e) => handleKeyButton(e)}
+              >
+                {hourString}
+              </S.ButtonHour>
+            )
+          })}
+        </S.WrappedButtons>
+        <S.WrappedButtons>
+          {minutes.map((minute, index) => {
+            const minuteString = minute.toString().padStart(2, '0')
+            const isActive = inputValue?.split(':')[1] === minuteString
+            return (
+              <S.ButtonMinute
+                active={isActive}
+                key={index}
+                onClick={() => handleSelectMinute(minuteString, index)}
+                ref={(el) => (minuteButtonsRef.current[index] = el)}
+                className="button-minute"
+                onKeyDown={(e) => handleKeyButton(e)}
+              >
+                {minuteString}
+              </S.ButtonMinute>
+            )
+          })}
+        </S.WrappedButtons>
+      </S.DropdownContainer>
+    </S.TimePickerContainer>
   )
 }

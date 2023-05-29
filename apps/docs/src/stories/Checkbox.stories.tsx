@@ -16,22 +16,18 @@ export default {
     },
     value: {
       type: 'boolean',
-      defaultValue: false,
       description: 'Defina se obrigatório selecionar o campo',
     },
     checked: {
       type: 'boolean',
-      defaultValue: false,
       description: 'Defina se o checkbox esta ativo ou não',
     },
     defaultChecked: {
       type: 'boolean',
-      defaultValue: false,
       description: 'Defina se o checkbox começa como ativo ou não',
     },
     disabled: {
       type: 'boolean',
-      defaultValue: false,
       description: 'Defina se o checkbox esta desabilitado ou não',
     },
     size: {
@@ -48,7 +44,7 @@ export default {
       control: {
         type: 'inline-radio',
       },
-      defaultValue: 'medium',
+      defaultValue: 'primary',
       type: 'string',
       description: 'Defina o estilo do checkbox',
     },

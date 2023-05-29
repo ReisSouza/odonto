@@ -20,4 +20,9 @@ export const media = {
   smallDesktop: `(min-width:${BREAKPOINT_SMALL_DESKTOP}px)`,
   mediumDesktop: `(min-width:${BREAKPOINT_MEDIUM_DESKTOP}px)`,
   largeDesktop: `(min-width:${BREAKPOINT_LARGE_DESKTOP}px)`,
+  'custom-1': '(prefers-color-scheme: custom-1)',
+  'custom-2': '(prefers-color-scheme: custom-2)',
+  'custom-3': '(prefers-color-scheme: custom-3)',
+  'custom-4': '(prefers-color-scheme: custom-4)',
+  'custom-5': '(prefers-color-scheme: custom-5)',
 }

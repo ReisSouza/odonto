@@ -1,8 +1,4 @@
-import {
-  TimePickerNew,
-  TimePickerProps,
-  TimePickerProvider,
-} from '@odonto-ui/core'
+import { TimePickerNew, TimePickerProps } from '@odonto-ui/core'
 import type { Meta, StoryObj } from '@storybook/react'
 
 export default {
@@ -10,13 +6,9 @@ export default {
   component: TimePickerNew,
   args: {
     defaultValue: '05:23',
+    label: 'Horario',
   },
   argTypes: {},
-  decorators: [
-    (Story, args) => {
-      return <TimePickerProvider>{Story()}</TimePickerProvider>
-    },
-  ],
 } as Meta<TimePickerProps>
 
 export const Default: StoryObj<TimePickerProps> = {

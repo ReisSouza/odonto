@@ -136,9 +136,13 @@ const slideOut = keyframes({
 
 export const CheckboxIndicator = styled(Checkbox.Indicator, {
   color: '$white',
-  width: '$4',
-  height: '$4',
+  width: 'stretch',
+  height: 'stretch',
   position: 'relative',
+
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
 
   '&[data-state="checked"]': {
     animation: `${slideIn} 200ms ease-out`,
@@ -162,20 +166,51 @@ export const CheckboxIndicator = styled(Checkbox.Indicator, {
     animation: `${slideOut} 200ms ease-out`,
   },
   variants: {
-    isSmall: {
-      true: {
-        width: '$3',
-        height: '$3',
+    size: {
+      small: {
+        width: 'stretch',
+        height: 'stretch',
+      },
+      medium: {
+        width: 'stretch',
+        height: 'stretch',
+      },
+      large: {
+        width: 'stretch',
+        height: 'stretch',
       },
     },
+    color: {
+      primary: {
+        '&[data-state="checked"]': {
+          background: '$primary-normal',
+        },
+      },
+
+      secondary: {
+        '&[data-state="checked"]': {
+          background: '$secondary-normal',
+        },
+      },
+
+      tertiary: {
+        '&[data-state="checked"]': {
+          background: '$tertiary-normal',
+        },
+      },
+    },
+  },
+  defaultVariants: {
+    size: 'medium',
+    color: 'primary',
   },
 })
 
 export const Label = styled(LabelPrimitive.Root, {
   color: '$secondary-normal',
-  fontWeight: '$medium',
-  lineHeight: '$default',
 
+  fontFamily: '$default',
+  fontWeight: '$medium',
   '& > span': {
     fontSize: '$sm',
     color: '$secondary-light-active',

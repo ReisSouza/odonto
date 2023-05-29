@@ -143,6 +143,8 @@ export const Hint = styled('span', {
 
 export const Label = styled(LabelPrimitive.Root, {
   color: '$secondary-normal',
+  fontWeight: '$medium',
+  fontFamily: '$default',
 
   '& > span': {
     fontSize: '$xxxs',

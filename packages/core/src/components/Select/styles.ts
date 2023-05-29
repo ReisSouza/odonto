@@ -9,6 +9,7 @@ export const Container = styled('div', {
   display: 'flex',
   flexDirection: 'column',
   gap: '$1',
+  position: 'relative',
 })
 
 export const SelectTrigger = styled(Select.Trigger, {
@@ -22,6 +23,8 @@ export const SelectTrigger = styled(Select.Trigger, {
   justifyContent: 'space-between',
   borderRadius: 4,
   boxSizing: 'border-box',
+  fontWeight: '$medium',
+  fontFamily: '$default',
 
   lineHeight: 1,
   gap: 5,
@@ -32,6 +35,8 @@ export const SelectTrigger = styled(Select.Trigger, {
 
   '& label': {
     width: '100%',
+    fontWeight: '$medium',
+    fontFamily: '$default',
   },
 
   '&:hover': {
@@ -40,6 +45,8 @@ export const SelectTrigger = styled(Select.Trigger, {
   },
   '&:focus': { outline: 'none' },
   '&[data-placeholder]': {
+    fontWeight: '$medium',
+    fontFamily: '$default',
     '&:hover': {
       color: '$secondary-normal !important',
     },
@@ -118,17 +125,18 @@ export const SelectContent = styled(Select.Content, {
   overflow: 'hidden',
   backgroundColor: 'white',
   position: 'absolute',
+  padding: '$4 $2',
+
   left: '50% !important',
-  transform: 'translateX(-50%) !important',
+  transform: 'translateX(-49.3%) !important',
   borderRadius: 6,
   width: '100%',
   boxShadow:
     '0px 10px 38px -10px rgba(22, 23, 24, 0.35), 0px 10px 20px -15px rgba(22, 23, 24, 0.2)',
 })
 
-export const SelectViewport = styled(Select.Viewport, {
-  padding: '$4 $2',
-})
+export const SelectPortal = styled(Select.Portal, {})
+export const SelectViewport = styled(Select.Viewport, {})
 
 export const SelectItem = styled(Select.Item, {
   fontSize: 13,
@@ -142,6 +150,7 @@ export const SelectItem = styled(Select.Item, {
   position: 'relative',
   userSelect: 'none',
   fontWeight: '$medium',
+  fontFamily: '$default',
 
   '&[data-disabled]': {
     color: '$secondary-normal',
@@ -196,10 +205,29 @@ export const SelectScrollDownButton = styled(
 
 export const SelectLabel = styled(Select.Label, {
   padding: '0 $4',
-  fontSize: '$sm',
-  fontWeight: '$medium',
+  fontSize: '$xxxs',
   lineHeight: '25px',
   color: '$secondary-active',
+  fontWeight: '$medium',
+  fontFamily: '$default',
+
+  variants: {
+    size: {
+      small: {
+        fontSize: '$xxs',
+      },
+      medium: {
+        fontSize: '$xs',
+      },
+      large: {
+        fontSize: '$sm',
+      },
+    },
+  },
+
+  defaultVariants: {
+    size: 'medium',
+  },
 })
 
 export const SelectSeparator = styled(Select.Separator, {
@@ -210,6 +238,8 @@ export const SelectSeparator = styled(Select.Separator, {
 
 export const Label = styled(LabelPrimitive.Root, {
   color: '$secondary-normal',
+  fontWeight: '$medium',
+  fontFamily: '$default',
   variants: {
     size: {
       small: {

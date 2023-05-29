@@ -1,4 +1,4 @@
-import React, { useId, useState } from 'react'
+import React, { useId, useLayoutEffect, useRef, useState } from 'react'
 import { CaretDown, Check, WarningCircle } from 'phosphor-react'
 import { ComponentProps } from '@stitches/react'
 import * as SelectPrimitive from '@radix-ui/react-select'
@@ -80,9 +80,17 @@ export const Select = ({
   ...rest
 }: SelectProps) => {
   const [valueSelected, setValueSelected] = useState<string | undefined>()
+  const [width, setWidth] = useState<number>(0)
   const id = useId()
+  const constrainerRef = useRef<HTMLDivElement>(null)
+  useLayoutEffect(() => {
+    const { current } = constrainerRef
+    if (current?.clientWidth) {
+      setWidth(current?.clientWidth)
+    }
+  }, [])
   return (
-    <S.Container>
+    <S.Container ref={constrainerRef}>
       <SelectPrimitive.Root
         {...rest}
         disabled={disabled}
@@ -106,58 +114,57 @@ export const Select = ({
           </SelectPrimitive.Icon>
         </S.SelectTrigger>
 
-        <SelectPrimitive.Portal>
-          <S.SelectContent
-            side={rest.side}
-            align={rest.align}
-            alignOffset={rest.alignOffset}
-            sideOffset={rest.sideOffset}
-            avoidCollisions={rest.avoidCollisions}
-            collisionPadding={rest.collisionPadding}
-          >
-            <S.SelectScrollUpButton />
-            <S.SelectViewport>
-              {options?.map((option, index) => {
-                if (option.group) {
-                  return (
-                    <>
-                      <S.SelectSeparator />
-                      <SelectPrimitive.Group key={index}>
-                        <S.SelectLabel>{option.labelGroup}</S.SelectLabel>
-                        {option.group.map((optionGroup, index) => {
-                          return (
-                            <SelectItem
-                              selected={optionGroup.value === valueSelected}
-                              key={index}
-                              value={optionGroup.value}
-                            >
-                              {optionGroup.label}
-                            </SelectItem>
-                          )
-                        })}
-                      </SelectPrimitive.Group>
-                    </>
-                  )
-                }
+        <S.SelectContent
+          side={rest.side}
+          align={rest.align}
+          alignOffset={rest.alignOffset}
+          sideOffset={rest.sideOffset}
+          avoidCollisions={rest.avoidCollisions}
+          collisionPadding={rest.collisionPadding}
+          css={{ width }}
+        >
+          <S.SelectScrollUpButton />
+          <S.SelectViewport>
+            {options?.map((option, index) => {
+              if (option.group) {
                 return (
-                  <SelectItem
-                    key={index}
-                    value={option.value}
-                    selected={option.value === valueSelected}
-                  >
-                    {option.label}
-                  </SelectItem>
+                  <>
+                    <S.SelectSeparator />
+                    <SelectPrimitive.Group key={index}>
+                      <S.SelectLabel>{option.labelGroup}</S.SelectLabel>
+                      {option.group.map((optionGroup, index) => {
+                        return (
+                          <SelectItem
+                            selected={optionGroup.value === valueSelected}
+                            key={index}
+                            value={optionGroup.value}
+                          >
+                            {optionGroup.label}
+                          </SelectItem>
+                        )
+                      })}
+                    </SelectPrimitive.Group>
+                  </>
                 )
-              })}
+              }
+              return (
+                <SelectItem
+                  key={index}
+                  value={option.value}
+                  selected={option.value === valueSelected}
+                >
+                  {option.label}
+                </SelectItem>
+              )
+            })}
 
-              <SelectPrimitive.Separator />
-            </S.SelectViewport>
-            <S.SelectScrollDownButton>
-              <CaretDown size={16} />
-            </S.SelectScrollDownButton>
-            <SelectPrimitive.Arrow />
-          </S.SelectContent>
-        </SelectPrimitive.Portal>
+            <SelectPrimitive.Separator />
+          </S.SelectViewport>
+          <S.SelectScrollDownButton>
+            <CaretDown size={16} />
+          </S.SelectScrollDownButton>
+          <SelectPrimitive.Arrow />
+        </S.SelectContent>
       </SelectPrimitive.Root>
       {hint && (
         <S.Hint>

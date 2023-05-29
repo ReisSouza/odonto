@@ -30,8 +30,6 @@ export const {
     width: 'space',
   },
   media: {
-    dark: '(prefers-color-scheme: dark)',
-    custom: '(prefers-color-scheme: custom)',
     ...media,
   },
   theme: MainTheme,

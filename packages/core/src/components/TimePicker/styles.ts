@@ -102,7 +102,7 @@ export const ButtonHour = styled('button', {
     },
   },
   '&:focus': {
-    boxShadow: '0px 0px 0px 2px rgba(206, 229, 255, 1)',
+    boxShadow: '0px 0px 0px 2px $colors$secondary-normal',
   },
 })
 
@@ -130,6 +130,6 @@ export const ButtonMinute = styled('button', {
     },
   },
   '&:focus': {
-    boxShadow: '0px 0px 0px 2px rgba(206, 229, 255, 1)',
+    boxShadow: '0px 0px 0px 2px $colors$secondary-normal',
   },
 })

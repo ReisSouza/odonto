@@ -39,7 +39,7 @@ export const CalendarDay = styled('button', {
   },
 
   '&:not(:disabled):hover': {
-    background: '#E9EBF8',
+    background: '',
   },
   variants: {
     selected: {

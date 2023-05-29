@@ -4,7 +4,6 @@ import React, {
   ComponentProps,
   useCallback,
   useEffect,
-  useId,
   useMemo,
   useRef,
   useState,
@@ -52,24 +51,24 @@ export const DatePicker: React.FC<DatePickerProps> = ({
   open,
   setOpen,
   value,
-  label,
   hint,
   hasIconHint,
   status,
   size,
-  htmlFor,
   disabled,
   isRequired,
-  complementLabel,
   onChange,
   ...rest
 }: DatePickerProps) => {
+  const inputRef = useRef<HTMLInputElement>(null)
+  const [dateInvalid, setDateInvalid] = useState(false)
   const [_open, _setOpen] = useState<boolean>(defaultOpen || false)
   const [openSelectYear, setOpenSelectYear] = useState<boolean>(false)
-  const [dateInvalid, setDateInvalid] = useState(false)
+
   const [onKeyPressed, setOnKeyPressed] = useState<
     'ArrowDown' | 'ArrowUp' | undefined
   >(undefined)
+
   const [currentDate, setCurrentDate] = useState(() => {
     return dayjs().set('date', 1)
   })
@@ -77,6 +76,55 @@ export const DatePicker: React.FC<DatePickerProps> = ({
   const [selectedDate, setSelectedDate] = useState<Date>(
     dayjs(defaultValue).toDate() || new Date(),
   )
+
+  const handleDateSelected = (date: Date) => {
+    setSelectedDate(date)
+    setOpen ? setOpen(false) : _setOpen(false)
+    if (onChange) onChange(dayjs(date).format('YYYY-MM-DD'))
+  }
+
+  const handleDateChange = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    const key = event.key
+    const isArrowUp = key === 'ArrowUp'
+    const isArrowDown = key === 'ArrowDown'
+    if (dateInvalid) {
+      if (dateInvalid) {
+        if (isArrowUp) return setOnKeyPressed('ArrowUp')
+        if (isArrowDown) return setOnKeyPressed('ArrowDown')
+      }
+    }
+  }
+
+  const handleUpdatedArrowDown = () => {
+    const daysInMonth = dayjs(selectedDate).subtract(1, 'month').daysInMonth()
+
+    const newCurrentMonth = dayjs(selectedDate)
+      .subtract(1, 'month')
+      .get('month')
+    const newCurrentDate = dayjs(currentDate)
+      .set('date', daysInMonth)
+      .set('month', newCurrentMonth)
+      .toDate()
+    setCurrentDate(
+      dayjs(currentDate).set('date', 1).set('month', newCurrentMonth),
+    )
+    setSelectedDate(newCurrentDate)
+    if (onChange) onChange(dayjs(newCurrentDate).format('YYYY-MM-DD'))
+  }
+
+  const handleUpdatedArrowUp = () => {
+    const daysInMonth = dayjs(selectedDate).add(1, 'month').daysInMonth()
+    const newCurrentMonth = dayjs(selectedDate).add(1, 'month').get('month')
+    const newCurrentDate = dayjs(currentDate)
+      .set('date', daysInMonth)
+      .set('month', newCurrentMonth)
+      .toDate()
+    setCurrentDate(
+      dayjs(currentDate).set('date', 1).set('month', newCurrentMonth),
+    )
+    setSelectedDate(newCurrentDate)
+    if (onChange) onChange(dayjs(newCurrentDate).format('YYYY-MM-DD'))
+  }
 
   const calendarWeeks = useMemo(() => {
     const daysInMonthArray = Array.from({
@@ -135,8 +183,6 @@ export const DatePicker: React.FC<DatePickerProps> = ({
     return calendarWeeks2
   }, [currentDate])
 
-  const inputRef = useRef<HTMLInputElement>(null)
-
   const useClickBody = useCallback(
     (event: any) => {
       if (!event.target.closest('.meu-elemento')) {
@@ -155,69 +201,20 @@ export const DatePicker: React.FC<DatePickerProps> = ({
     }
   }, [useClickBody])
 
-  const handleDateSelected = (date: Date) => {
-    setSelectedDate(date)
-    setOpen ? setOpen(false) : _setOpen(false)
-    if (onChange) onChange(dayjs(date).format('YYYY-MM-DD'))
-  }
-
-  const handleDateChange = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    const key = event.key
-    const isArrowUp = key === 'ArrowUp'
-    const isArrowDown = key === 'ArrowDown'
-    if (dateInvalid) {
-      if (dateInvalid) {
-        if (isArrowUp) return setOnKeyPressed('ArrowUp')
-        if (isArrowDown) return setOnKeyPressed('ArrowDown')
-      }
-    }
-  }
-
-  const handleUpdatedArrowDown = () => {
-    const daysInMonth = dayjs(selectedDate).subtract(1, 'month').daysInMonth()
-
-    const newCurrentMonth = dayjs(selectedDate)
-      .subtract(1, 'month')
-      .get('month')
-    const newCurrentDate = dayjs(currentDate)
-      .set('date', daysInMonth)
-      .set('month', newCurrentMonth)
-      .toDate()
-    setCurrentDate(
-      dayjs(currentDate).set('date', 1).set('month', newCurrentMonth),
-    )
-    setSelectedDate(newCurrentDate)
-    if (onChange) onChange(dayjs(newCurrentDate).format('YYYY-MM-DD'))
-  }
-
-  const handleUpdatedArrowUp = () => {
-    const daysInMonth = dayjs(selectedDate).add(1, 'month').daysInMonth()
-    const newCurrentMonth = dayjs(selectedDate).add(1, 'month').get('month')
-    const newCurrentDate = dayjs(currentDate)
-      .set('date', daysInMonth)
-      .set('month', newCurrentMonth)
-      .toDate()
-    setCurrentDate(
-      dayjs(currentDate).set('date', 1).set('month', newCurrentMonth),
-    )
-    setSelectedDate(newCurrentDate)
-    if (onChange) onChange(dayjs(newCurrentDate).format('YYYY-MM-DD'))
-  }
-
   useEffect(() => {
     if (dateInvalid && onKeyPressed === 'ArrowDown')
       return handleUpdatedArrowDown()
     if (dateInvalid && onKeyPressed === 'ArrowUp') return handleUpdatedArrowUp()
   }, [dateInvalid, onKeyPressed])
-  const id = useId()
+
   return (
     <S.Container className="meu-elemento">
-      {label && (
+      {/* {label && (
         <S.Label disabled={disabled} size={size} htmlFor={htmlFor || id}>
           {label} <span>{complementLabel}</span>{' '}
           {isRequired && <span className="isRequired">*</span>}
         </S.Label>
-      )}
+      )} */}
       <TextField
         {...rest}
         iconRight={

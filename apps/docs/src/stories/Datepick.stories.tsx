@@ -5,7 +5,10 @@ export default {
   title: 'Form/Datepicker',
   component: DatePicker,
 
-  args: {},
+  args: {
+    defaultValue: '1995-08-04',
+    label: 'Data da consulta',
+  },
   decorators: [
     (Story) => {
       return (

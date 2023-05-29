@@ -17,7 +17,6 @@ export * from '@/components/ButtonLink/ButtonLink'
 // export * from '@/components/TimePicker/TimePicker'
 export * from '@/components/TimePicker/TimePicker'
 
-export * from '@/components/TimePicker/TimePickerContext'
 // export { default as TimePicker } from '@/components/TimePicker/TimePicker'
 
 export * from '@/components/Popover/Popover'

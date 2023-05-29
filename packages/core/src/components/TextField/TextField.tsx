@@ -64,7 +64,12 @@ export const TextField = forwardRef<ElementRef<typeof S.Input>, TextFieldProps>(
     }: TextFieldProps,
     ref,
   ) => {
-    const [_value, setValue] = useState<string | undefined>(defaultValue || '')
+    const generateDefaultValue = formatStringType
+      ? formatString({ value: defaultValue, type: formatStringType })
+      : defaultValue
+    const [_value, setValue] = useState<string | undefined>(
+      generateDefaultValue || '',
+    )
 
     const id = useId()
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

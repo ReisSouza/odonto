@@ -1,4 +1,5 @@
-import React from 'react'
+/* eslint-disable react-hooks/rules-of-hooks */
+import React, { useId } from 'react'
 import { Check, WarningCircle } from 'phosphor-react'
 import { VariantProps } from '@stitches/react'
 
@@ -32,19 +33,20 @@ export const Checkbox = ({
   complementLabel,
   ...props
 }: CheckboxProps) => {
+  const defaultId = useId()
   return (
     <S.Container>
       <S.WrappedCheckbox>
-        <S.CheckboxContainer {...props}>
-          <S.CheckboxIndicator>
-            <Check size={16} />
+        <S.CheckboxContainer {...props} id={htmlFor || defaultId}>
+          <S.CheckboxIndicator color={props.color} size={props.size}>
+            <Check size={16} weight="bold" />
           </S.CheckboxIndicator>
         </S.CheckboxContainer>
         {label && (
           <S.Label
             disabled={props.disabled}
             size={props.size}
-            htmlFor={htmlFor || id}
+            htmlFor={htmlFor || defaultId}
           >
             {label} <span>{complementLabel}</span>{' '}
             {required && <span className="isRequired">*</span>}

@@ -6,6 +6,9 @@ export const MultiStepContainer = styled('div', {})
 export const Label = styled(Paragraph, {
   color: '$secondary-normal',
 
+  fontWeight: '$medium',
+  fontFamily: '$default',
+
   defaultVariants: {
     size: 'xs',
   },
@@ -21,12 +24,12 @@ export const Steps = styled('div', {
 export const Step = styled('div', {
   height: '$1',
   borderRadius: '$1',
-  backgroundColor: '$primary-normal',
+  backgroundColor: '$primary-light-normal',
 
   variants: {
     active: {
       true: {
-        backgroundColor: '$primary-active',
+        backgroundColor: '$primary-normal',
       },
     },
   },
