@@ -5,7 +5,12 @@
       "cache": false
     },
     "build": {
-      "outputs": ["dist/**", "storybook-static/**"],
+      "outputs": [
+        "dist/**",
+        "storybook-static/**",
+        ".next/**",
+        "!.next/cache/**"
+      ],
       "dependsOn": ["^build"]
     },
     "clean": {
