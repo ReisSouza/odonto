@@ -1,7 +1,7 @@
 import { styled } from '../../styles'
 
 export const BoxRoot = styled('div', {
-  borderRadius: '$4',
+  borderRadius: '$3',
 
   padding: '$4',
 

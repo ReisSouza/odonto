@@ -36,6 +36,7 @@ export const TooltipContent = styled(TooltipPrimitive.Content, {
   userSelect: 'none',
   animationDuration: '400ms',
   animationTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)',
+  zIndex: '$20',
   willChange: 'transform, opacity',
   '&[data-state="delayed-open"]': {
     '&[data-side="top"]': { animationName: slideDownAndFade },

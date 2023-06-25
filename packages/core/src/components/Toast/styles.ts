@@ -22,6 +22,7 @@ const swipeOut = keyframes({
 export const Root = styled(Toast.Root, {
   backgroundColor: 'white',
   borderRadius: '6px',
+  zIndex: '$20',
   boxShadow:
     'hsl(206 22% 7% / 35%) 0px 10px 38px -10px, hsl(206 22% 7% / 20%) 0px 10px 20px -15px',
   padding: '15px',

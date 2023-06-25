@@ -1,22 +1,50 @@
-import React, { ElementType } from 'react'
+import React from 'react'
 
 import { VariantProps } from '@stitches/react'
 
 import * as S from './styles'
-import { CSS } from '@/types/css'
+import { TypographyBase } from '../types/TypographyBase'
 
-export interface ParagraphProps
-  extends VariantProps<typeof S.ParagraphContainer> {
-  as?: ElementType
-  css?: CSS
-  children?: React.ReactNode
-}
+export type ParagraphProps = VariantProps<typeof S.ParagraphContainer> &
+  TypographyBase & {}
 
 const Paragraph: React.FC<ParagraphProps> = ({
   children,
+  css,
+  color,
+  pt,
+  pb,
+  pl,
+  pr,
+  mt,
+  mb,
+  ml,
+  mr,
+  p,
+  m,
   ...rest
 }: ParagraphProps) => {
-  return <S.ParagraphContainer {...rest}>{children}</S.ParagraphContainer>
+  return (
+    <S.ParagraphContainer
+      css={{
+        ...css,
+        color,
+        padding: p,
+        margin: m,
+        marginLeft: ml,
+        marginRight: mr,
+        marginBottom: mb,
+        marginTop: mt,
+        paddingBottom: pb,
+        paddingTop: pt,
+        paddingLeft: pl,
+        paddingRight: pr,
+      }}
+      {...rest}
+    >
+      {children}
+    </S.ParagraphContainer>
+  )
 }
 
 export default Paragraph

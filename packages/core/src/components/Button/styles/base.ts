@@ -20,7 +20,7 @@ export const Base = styled('button', {
   fontFamily: '$default',
 
   overflow: 'hidden',
-  borderRadius: '$1',
+  borderRadius: '$2',
 
   '&:disabled': {
     background: '$border !important',

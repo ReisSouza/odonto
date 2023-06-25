@@ -17,9 +17,11 @@ export const DialogOverlay = styled(Dialog.Overlay, {
   position: 'fixed',
   inset: 0,
   animation: `${overlayShow} 150ms cubic-bezier(0.16, 1, 0.3, 1)`,
+  zIndex: '$40',
 })
 
 export const DialogContent = styled(Dialog.Content, {
+  zIndex: '$50',
   backgroundColor: 'white',
   borderRadius: 6,
   boxShadow:
@@ -85,5 +87,3 @@ export const Flex = styled('div', {
   justifyContent: 'flex-end',
   marginTop: '$6',
 })
-
-//

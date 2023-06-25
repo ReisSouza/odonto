@@ -17,13 +17,13 @@ export const DialogCLose = ({ ...rest }: DialogCloseProps) => {
 }
 
 export type DialogProps = ComponentProps<typeof DialogPrimitive.Root> & {
-  trigger: React.ReactNode
-  description: string
-  title: string
-  cssOverlay: CSS
-  cssContent: CSS
-  cssFooter: CSS
-  footer: React.ReactElement[]
+  trigger?: React.ReactNode
+  description?: string
+  title?: string
+  cssOverlay?: CSS
+  cssContent?: CSS
+  cssFooter?: CSS
+  footer?: React.ReactElement[]
   content: React.ReactNode
 }
 
@@ -54,7 +54,7 @@ export const Dialog: React.FC<DialogProps> = ({
           </S.DialogDescription>
           {content}
           <S.Flex css={cssFooter}>
-            {footer.map((itemFooter) => {
+            {footer?.map((itemFooter) => {
               return itemFooter
             })}
           </S.Flex>

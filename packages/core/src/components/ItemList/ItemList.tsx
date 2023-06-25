@@ -40,7 +40,7 @@ const ItemList: React.FC<ItemListProps> = ({
   return (
     <S.ItemList {...rest} id={id} role="option">
       {iconLeft && iconLeft}
-      <Paragraph>{label}</Paragraph>
+      <Paragraph css={{ fontWeight: '$regular' }}>{label}</Paragraph>
       {iconRight && iconRight}
     </S.ItemList>
   )

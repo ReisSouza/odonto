@@ -12,9 +12,11 @@ export default {
   decorators: [
     (Story) => {
       return (
-        <Box as="div" css={{ minHeight: '400px' }}>
-          {Story()}
-        </Box>
+        <>
+          <Box as="div" css={{ minHeight: '400px' }}>
+            {Story()}
+          </Box>
+        </>
       )
     },
   ],

@@ -1,4 +1,4 @@
-import { styled } from '@/styles'
+import { keyframes, styled } from '@/styles'
 
 export const ThreadContainer = styled('thead', {
   borderBottomColor: '$border',
@@ -64,4 +64,27 @@ export const Options = styled('th', {
     display: 'flex',
     justifyContent: 'center',
   },
+})
+
+const barAnimation = keyframes({
+  '0%': { transform: 'translateX(-100%)' },
+  '100%': { transform: 'translateX(100%)' },
+})
+
+export const BarLoader = styled('div', {
+  width: '100%',
+  height: '4px',
+  backgroundColor:
+    'linear-gradient(to right, $colors$primary-light-active, $colors$tertiary-light-active)',
+  borderRadius: '2px',
+  overflow: 'hidden',
+})
+
+export const Bar = styled('div', {
+  width: '100%',
+  height: '100%',
+  background:
+    'linear-gradient(to right, $colors$primary-light-active, $colors$tertiary-light-active)',
+  position: 'relative',
+  animation: `${barAnimation} 3s infinite linear`,
 })

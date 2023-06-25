@@ -1,5 +1,11 @@
 # @odonto-ui/tokens
 
+## 0.0.5
+
+### Patch Changes
+
+- updated
+
 ## 0.0.4
 
 ### Patch Changes

@@ -51,10 +51,10 @@ export const Table: React.FC<TableProps> = ({
     if (onItemsSelected) {
       onItemsSelected(itemsChecked)
     }
-    if (itemsChecked.length && itemsChecked.length !== rows.length) {
+    if (itemsChecked.length && itemsChecked.length !== rows?.length) {
       setHasIndeterminate('indeterminate')
     }
-    if (itemsChecked.length === rows.length) {
+    if (itemsChecked.length === rows?.length) {
       setHasIndeterminate(true)
     }
     if (itemsChecked.length === 0) {
@@ -64,7 +64,7 @@ export const Table: React.FC<TableProps> = ({
 
   const handleOnCheckChangedAll = (v: boolean) => {
     if (v) {
-      const itemsForId = rows.map((row) => `${row.id}`) || []
+      const itemsForId = rows?.map((row) => `${row.id}`) || []
       setItemsChecked(itemsForId)
       if (onItemsSelected) {
         onItemsSelected(itemsForId)
@@ -112,6 +112,7 @@ export const Table: React.FC<TableProps> = ({
             options={options}
             onSort={onSort}
           />
+
           <TBody
             hasRounded={hasRounded}
             options={options}

@@ -16,7 +16,7 @@ export const ItemList = styled('li', {
 
   cursor: 'pointer',
 
-  borderRadius: '$1',
+  borderRadius: '$2',
 
   '&:hover': {
     background: '$primary-light-hover',

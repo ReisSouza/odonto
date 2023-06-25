@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import * as S from './styles'
 import { CaretDown, CaretUp } from 'phosphor-react'
 import { CheckedState } from '@radix-ui/react-checkbox'
-import { Checkbox } from '@/components/Checkbox/Checkbox'
+import { Checkbox } from '@/components/Form/Checkbox/Checkbox'
 import { OptionsTableProps } from '../TBody/TBody'
 
 export type ThreadProps = {
@@ -19,6 +19,7 @@ export type ThreadProps = {
     column: string
     sort: 'asc' | 'desc' | 'default'
   }) => void
+  isLoading?: boolean
 }
 
 export const THead: React.FC<ThreadProps> = ({
@@ -28,6 +29,7 @@ export const THead: React.FC<ThreadProps> = ({
   options,
   canRenderCheckbox,
   onSort,
+  isLoading,
 }: ThreadProps) => {
   const [sortType, setSortType] = useState<'default' | 'asc' | 'desc'>(
     'default',
@@ -70,7 +72,6 @@ export const THead: React.FC<ThreadProps> = ({
             <S.Th
               hasSort={!!onSort}
               active={col === selectedColumn}
-              scope="col"
               key={index}
               onClick={() => (onSort ? handleSortToggle(col) : {})}
             >
@@ -92,6 +93,15 @@ export const THead: React.FC<ThreadProps> = ({
           </S.Options>
         )}
       </tr>
+      {isLoading && (
+        <tr>
+          <td colSpan={999}>
+            <S.BarLoader>
+              <S.Bar />
+            </S.BarLoader>
+          </td>
+        </tr>
+      )}
     </S.ThreadContainer>
   )
 }

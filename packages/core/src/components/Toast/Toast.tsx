@@ -1,25 +1,37 @@
 import { WarningCircle, X } from 'phosphor-react'
 import * as ToastPrimitive from '@radix-ui/react-toast'
-import React, { ComponentProps, ReactNode } from 'react'
+import React, { ReactNode } from 'react'
 
 import * as S from './styles'
+import { VariantProps } from '@stitches/react'
 
-export type ToastCSSType = ComponentProps<typeof S.Root>
-
-export type ToastProps = Omit<ToastCSSType, 'title'> & {
-  title: ReactNode
-  description: ReactNode
-}
+export type ToastProps = VariantProps<typeof S.Root> &
+  Pick<
+    ToastPrimitive.ToastProps,
+    | 'asChild'
+    | 'type'
+    | 'duration'
+    | 'defaultOpen'
+    | 'open'
+    | 'onOpenChange'
+    | 'onEscapeKeyDown'
+    | 'onSwipeEnd'
+    | 'forceMount'
+  > & {
+    title: ReactNode
+    description: ReactNode
+  }
 
 export const Toast: React.FC<ToastProps> = ({
   title,
   description,
+  variant,
   ...rest
 }: ToastProps) => {
   return (
     <>
       <S.Root {...rest}>
-        <S.Section variant={rest.variant}>
+        <S.Section variant={variant}>
           <WarningCircle size={36} />
           <S.WrappedContent>
             {title && <S.Title>{title}</S.Title>}

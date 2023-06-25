@@ -18,6 +18,5 @@ export const HeadingContainer = styled('h2', {
 
   defaultVariants: {
     size: 'md',
-    color: 'primary',
   },
 })

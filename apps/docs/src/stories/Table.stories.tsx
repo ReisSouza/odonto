@@ -31,17 +31,11 @@ const meta = {
 } as Meta<TableProps>
 
 export default meta
-type Story = StoryObj<typeof meta>
-
-const TableTemplate: Story = {
-  render: ({ ...args }) => {
-    return <Table {...args} cols={colsDefault} rows={rowsDefault} />
-  },
-}
 
 export const WithAllProperty: StoryObj<TableProps> = {
-  ...TableTemplate,
   args: {
+    cols: colsDefault,
+    rows: rowsDefault,
     onFilter: (v) => console.log(v),
     onAdd: () => {},
     labelButtonAdd: 'Adicionar',
@@ -65,8 +59,9 @@ export const WithAllProperty: StoryObj<TableProps> = {
 }
 
 export const WithRounded: StoryObj<TableProps> = {
-  ...TableTemplate,
   args: {
+    cols: colsDefault,
+    rows: rowsDefault,
     onFilter: (v) => console.log(v),
     onAdd: () => {},
     labelButtonAdd: 'Adicionar',
@@ -91,35 +86,41 @@ export const WithRounded: StoryObj<TableProps> = {
 }
 
 export const Default: StoryObj<TableProps> = {
-  ...TableTemplate,
-  args: {},
+  args: {
+    cols: colsDefault,
+    rows: rowsDefault,
+  },
 }
 export const WithFilter: StoryObj<TableProps> = {
-  ...TableTemplate,
   args: {
+    cols: colsDefault,
+    rows: rowsDefault,
     onFilter: (v) => console.log(v),
   },
 }
 
 export const WithActionAdd: StoryObj<TableProps> = {
-  ...TableTemplate,
   args: {
+    cols: colsDefault,
+    rows: rowsDefault,
     onAdd: () => {},
     labelButtonAdd: 'Adicionar',
   },
 }
 
 export const WithCheckbox: StoryObj<TableProps> = {
-  ...TableTemplate,
   args: {
+    cols: colsDefault,
+    rows: rowsDefault,
     onChecked: () => {},
     onItemsSelected: () => {},
   },
 }
 
 export const WithOptions: StoryObj<TableProps> = {
-  ...TableTemplate,
   args: {
+    cols: colsDefault,
+    rows: rowsDefault,
     options: [
       {
         icon: <PencilSimple />,
@@ -136,8 +137,9 @@ export const WithOptions: StoryObj<TableProps> = {
 }
 
 export const WithSort: StoryObj<TableProps> = {
-  ...TableTemplate,
   args: {
+    cols: colsDefault,
+    rows: rowsDefault,
     onSort: (v) => console.log(v),
   },
 }

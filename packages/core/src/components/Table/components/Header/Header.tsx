@@ -9,10 +9,10 @@ import {
   TrashSimple,
 } from 'phosphor-react'
 import { Button } from '@/components/Button/Button'
-import { TextField } from '@/components/TextField/TextField'
-import { Controller, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { FilterFormData, filterSchema } from './validation'
+import { TextField } from '@/components/Form/TextField/TextField'
+import { Controller, useForm } from 'react-hook-form'
 
 export type HeaderProps = {
   itemsChecked?: string[]

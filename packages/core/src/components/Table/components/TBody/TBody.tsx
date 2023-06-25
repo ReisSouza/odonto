@@ -4,28 +4,28 @@ import * as S from './styles'
 import { DotsThreeVertical } from 'phosphor-react'
 import Popover from '@/components/Popover/Popover'
 import ItemList from '@/components/ItemList/ItemList'
-import { Checkbox } from '@/components/Checkbox/Checkbox'
+import { Checkbox } from '@/components/Form/Checkbox/Checkbox'
 
 export type OptionsTableProps = {
   label: string
   icon: ReactNode
-  onClick: (id: string) => void
+  onClick?: (id: string) => void
 }
 export type RowsProps = {
-  cols: ReactNode[]
+  cols?: ReactNode[]
   id: string
   options?: OptionsTableProps[]
 }
 
 export type TBodyProps = {
-  rows: RowsProps[]
+  rows?: RowsProps[]
   handleClickRow?: (id: string) => void
   setItemsChecked?: React.Dispatch<React.SetStateAction<string[]>>
   itemsChecked?: string[]
   onItemsChecked?: (itemsChecked: string[]) => void
   onChecked?: (id: string | undefined) => void
   options?: OptionsTableProps[]
-  canRenderCheckbox: boolean
+  canRenderCheckbox?: boolean
   hasRounded?: boolean
 }
 
@@ -108,7 +108,7 @@ export const TBody: React.FC<TBodyProps> = ({
                         return (
                           <ItemList
                             key={index}
-                            onClick={() => onClick(row.id)}
+                            onClick={() => onClick && onClick(row.id)}
                             iconLeft={icon}
                             label={label}
                             isRounded={hasRounded}

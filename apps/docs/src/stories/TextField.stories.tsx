@@ -6,6 +6,7 @@ import { MagnifyingGlass } from 'phosphor-react'
 export default {
   title: 'Form/Text Field',
   component: TextField,
+
   args: {
     label: 'Email',
     placeholder: 'user@user.com',
@@ -85,6 +86,7 @@ export default {
       type: 'symbol',
     },
   },
+
   decorators: [
     (Story) => {
       return (
@@ -129,6 +131,7 @@ export const isRequired: StoryObj<TextFieldProps> = {
     placeholder: 'user@user.com',
   },
 }
+
 export const complementLabel: StoryObj<TextFieldProps> = {
   args: {
     isRequired: true,

@@ -1,6 +1,6 @@
 {
   "name": "@odonto-ui/core",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -40,6 +40,7 @@
     "dayjs": "^1.11.7",
     "phosphor-react": "^1.4.1",
     "react-hook-form": "^7.43.9",
+    "react-spinners": "^0.13.8",
     "zod": "^3.21.4"
   }
 }

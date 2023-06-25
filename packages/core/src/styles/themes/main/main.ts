@@ -8,6 +8,9 @@ import {
   space,
   borderWidths,
   shadows,
+  sizes,
+  zIndices,
+  transitions,
 } from '@odonto-ui/tokens'
 
 export const MainTheme = {
@@ -20,4 +23,7 @@ export const MainTheme = {
   space,
   borderWidths,
   shadows,
+  sizes,
+  zIndices,
+  transitions,
 }

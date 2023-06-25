@@ -13,3 +13,9 @@ export * from './border-width'
 export * from './shadows'
 
 export * from './media'
+
+export * from './sizes'
+
+export * from './zIndices'
+
+export * from './transitions'

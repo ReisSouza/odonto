@@ -1,12 +1,12 @@
 import { VariantProps } from '@stitches/react'
-import React from 'react'
+import React, { ReactNode } from 'react'
 
 import * as S from './styles'
 import { User } from 'phosphor-react'
 
 export type AvatarProps = VariantProps<typeof S.ContainerAvatar> & {
   src?: string
-  icon?: string
+  icon?: ReactNode
   title?: string
   arialLabel?: string
   fallbackName?: string

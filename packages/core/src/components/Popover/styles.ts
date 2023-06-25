@@ -27,7 +27,7 @@ export const PopoverTrigger = styled(Popover.Trigger, {
   all: 'unset',
 })
 export const PopoverContent = styled(Popover.Content, {
-  borderRadius: '$1',
+  borderRadius: '$3',
   minWidth: 220,
   padding: '$3',
   backgroundColor: '$white',

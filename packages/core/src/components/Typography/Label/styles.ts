@@ -17,6 +17,5 @@ export const DisplayContainer = styled('label', {
 
   defaultVariants: {
     size: 'xxs',
-    color: 'secondary',
   },
 })
