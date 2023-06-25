@@ -1,0 +1,2 @@
+import{D as t,B as e}from"./index.bdb81842.js";import{j as r,F as s}from"./jsx-runtime.0f49c2db.js";import"./index.432d3e08.js";import"./iframe.cc9555c9.js";const n={title:"Form/Datepicker",component:t,args:{defaultValue:"1995-08-04",label:"Data da consulta"},decorators:[a=>r(s,{children:r(e,{as:"div",css:{minHeight:"400px"},children:a()})})],argTypes:{}},p={args:{}},d=["Primary"];export{p as Primary,d as __namedExportsOrder,n as default};
+//# sourceMappingURL=Datepick.stories.66da0363.js.map
